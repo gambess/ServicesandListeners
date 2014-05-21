@@ -59,6 +59,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+        resolve_target_entities:
+            entity_listener_resolver: raziel.entity_listener_resolver
 
 # Swiftmailer Configuration
 swiftmailer:

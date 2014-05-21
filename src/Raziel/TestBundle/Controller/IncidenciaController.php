@@ -27,10 +27,9 @@ class IncidenciaController extends Controller
      */
     public function indexAction()
     {
+        
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('RazielBundle:Incidencia')->findAll();
-
         return array(
             'entities' => $entities,
         );
@@ -44,12 +43,16 @@ class IncidenciaController extends Controller
      */
     public function createAction(Request $request)
     {
+        $format = 'Y-m-d H:i:s';
         $entity = new Incidencia();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            $now = new \DateTime();
+            $entity->setFechaInsercion($now);
             $em->persist($entity);
             $em->flush();
 

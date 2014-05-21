@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Incidencia
  *
  * @ORM\Table()
+ * @ORM\EntityListeners({ "Raziel\TestBundle\Listener\IncidenciaListener" })
  * @ORM\Entity(repositoryClass="Raziel\TestBundle\Entity\IncidenciaRepository")
  */
 class Incidencia

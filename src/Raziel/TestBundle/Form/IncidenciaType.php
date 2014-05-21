@@ -16,10 +16,10 @@ class IncidenciaType extends AbstractType
     {
         $builder
             ->add('estado')
-            ->add('fechaInsercion')
-            ->add('fechaLectura')
-            ->add('fechaEnvio')
-            ->add('fechaLog')
+            ->add('fechaInsercion', 'datetime', array('required' => false,))
+            ->add('fechaLectura', 'datetime', array('required' => false,))
+            ->add('fechaEnvio', 'datetime', array('required' => false,))
+            ->add('fechaLog', 'datetime', array('required' => false,))
         ;
     }
     
