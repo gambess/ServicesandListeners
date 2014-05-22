@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Raziel\TestBundle\Entity\Incidencia;
 
+
 class IncidenciaListener
 {
     private $mail_service;
@@ -61,9 +62,18 @@ class IncidenciaListener
      * @ORM\PostPersist
      * @ORM\PostUpdate
      */
-    public function postFlush(Incidencia $incidencia, LifecycleEventArgs $event)
+    public function launchTrigger(Incidencia $incidencia, LifecycleEventArgs $event)
     {
+        $inci = $event->getObject();
+        if(null === $inci->getFechaInsercion()){
+            $inci->setFechaInsercion(new \DateTime(date('Y-m-d H:m:s')));
+        }
+        $inci->setFechaLectura(new \DateTime(date('Y-m-d H:m:s')));
+        $em = $event->getEntityManager();
         $this->sendMail($incidencia);
+        $inci->setFechaEnvio(new \DateTime(date('Y-m-d H:m:s')));
+
+        
     }
 
     public function createMail($texto)
@@ -72,7 +82,7 @@ class IncidenciaListener
             ->setSubject('Sending TICKET STATES')
             ->setFrom('raziel.valle@fractaliasoftware.com')
             ->setTo('raziel.valle@fractaliasoftware.com')
-            ->setBody( 'start-message: <br>' . $texto . '<br>' . 'end-message' );
+            ->setBody( 'start-message: ' . $texto . ' ' . 'end-message' );
 
         return $message;
     }
@@ -80,11 +90,8 @@ class IncidenciaListener
     public function sendMail(Incidencia $incidencia)
     {
         $format = 'Y-m-d H:i:s';
-        $fecha = new \DateTime();
-        $incidencia->setFechaLectura($fecha->format($format));
-        $envio = new \DateTime();
-        $incidencia->setFechaEnvio($envio->format($format));
-        $texto = 'Estado del Ticket: ' .$incidencia->getEstado() . '<br /> Fecha (Completa) de Envio: ' .$incidencia->getFechaEnvio();
+        $insert = $incidencia->getFechaInsercion();
+        $texto = 'Estado del Ticket: ' .$incidencia->getEstado() . '<br /> Fecha (Completa) de Inserción: ' . $insert->format($format);
         $this->mail_service->send($this->createMail((string)$texto));
         
     }
