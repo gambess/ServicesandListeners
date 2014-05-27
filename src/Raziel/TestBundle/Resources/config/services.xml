@@ -14,12 +14,12 @@
     <services>
         <!-- Listener -->
         <service id="raziel.listener" class="%raziel.listener.class%">
+            <argument type="service" id="service_container"/>
             <argument type="service" id="mailer" />
-<!--            
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>
-            -->
-            <tag name="doctrine.entity_listener" event="postFlush"/>
+            
+            <!--<tag name="doctrine.entity_listener" event="postFlush"/>-->
         </service>
 
         <!-- Listener Resolver -->

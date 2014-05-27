@@ -21,15 +21,47 @@ use Raziel\TestBundle\Entity\Incidencia;
 
 class IncidenciaListener
 {
-    private $mail_service;
+//    private $mail_service;
 //    private $formatter;
 //    private $another_service;
 
-    public function __construct($mailer)
+//    public function __construct($mailer)
+//    {
+//        $this->mail_service = $mailer;
+//    }
+
+    /** 
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * 
+     */
+    private $container;
+    
+    /** 
+     * @var array
+     * 
+     */
+    private $mapping;
+
+    /**
+     * Creates a container aware entity resolver.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
+     */
+    public function __construct(ContainerInterface $container, $mailer)
     {
+        $this->setContainer($container);
         $this->mail_service = $mailer;
+        $this->mapping = array();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+    
     /**
      * Trigger para capturar las inserciones
      *

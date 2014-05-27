@@ -1,0 +1,38 @@
+raziel_sms_manager:
+    envio_sms:
+        api:
+          conexion:
+              url: 'https://www.mensajerianegocios.movistar.es/SrvConexion'
+              apiuser: 'B902CCDB-RAUL.MADR'
+              apipass: 'Nivel1'
+              remitente: '217812'
+        servicio:
+            buzon:
+                - SEGEST MON
+                - SEGEST SOC
+                - SEG MERCEDES
+                - SOPORTE SEGURIDAD
+                - SOC SEGURIDAD
+        destino:
+            grupos:
+                - { nombre: ESCALADO, dias: [ lunes, martes, miercoles, jueves, viernes, sabado, domingo ], desde: 00:00, hasta: 23:59 } 
+                - { nombre: SOPORTE, dias: [ lunes, martes, miercoles, jueves, viernes, sabado, domingo ], desde: 23:00, hasta: 07:00 } 
+#           numeros:
+#               - { numero: 602814043, dias: [ lunes, martes, miercoles, jueves, viernes, sabado, domingo ], desde: 00:00, hasta: 23:59 } 
+        prioridad:
+                - CRITICA
+        estado:
+                -RESUELTO
+    extras:
+        clientes:
+            nombres_cortos: #agregar y remplazar con nombres de clientes
+                - cliente1
+                - cliente2
+                - cliente3
+                - cliente4
+        tipo:
+            traduccion_caso: 
+                - { incidencia: 1, peticion: 2, queja: 3, consulta: 4 }
+        guardia:
+            TSOL:
+                - { nombre: tsol_de_guardia } #reemplazar por TSOL de guardia

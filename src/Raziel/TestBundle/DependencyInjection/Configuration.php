@@ -12,13 +12,31 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+
     /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('raziel');
+        $rootNode = $treeBuilder->root('raziel_sms_manager');
+
+        $rootNode
+            ->children()
+                ->arrayNode('envio_sms')
+                        ->children()
+                            ->scalarNode('url')->end()
+                            ->scalarNode('apiuser')->end()
+                            ->scalarNode('apipass')->end()
+                            ->scalarNode('remitente')->end()
+                        ->end()
+                        ->children()
+                            ->prototype('scalar')->end()
+                        ->end()
+                ->end()
+            ->end()
+        
+        ;
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
@@ -26,4 +44,5 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder;
     }
+
 }
