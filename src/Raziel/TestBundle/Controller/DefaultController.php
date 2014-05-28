@@ -101,15 +101,25 @@ class DefaultController extends Controller
      */
     function configAction()
     {
-        $conf = $this->container->getParameter('raziel');
-        $return = '<pre>'.print_r($conf, true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.api', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.servicio', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.grupo_destino', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.numero_destino', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.prioridad', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.estado', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.nombres_cortos', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.traduccion_tipo_caso', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.tsol_guardia', true)).'</pre>';
+        
+        
+
         
 //        foreach ($conf['api'] as $key => $value)
 //        {
 //            echo 'key: '.$key . 'value: ' .$value;
 //        }
         
-        return new Response($return);
+        return new Response('1');
     }
 
 }
