@@ -5,6 +5,7 @@ namespace Raziel\TestBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Seven\RpcBundle\XmlRpc\Client;
 use Seven\RpcBundle\XmlRpc\Server;
 
@@ -93,6 +94,22 @@ class DefaultController extends Controller
 //        echo $client->call('sms.info', array('Raziel'));
 //        echo $client->call('calc.add', array(1, 2)); // echo -1
 //        echo $client->call('calc.sub', array(2, 3)); // echo -1
+    }
+    /**
+     * @Route("/config")
+     * @Template()
+     */
+    function configAction()
+    {
+        $conf = $this->container->getParameter('raziel');
+        $return = '<pre>'.print_r($conf, true).'</pre>';
+        
+//        foreach ($conf['api'] as $key => $value)
+//        {
+//            echo 'key: '.$key . 'value: ' .$value;
+//        }
+        
+        return new Response($return);
     }
 
 }
