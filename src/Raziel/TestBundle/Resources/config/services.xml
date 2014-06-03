@@ -14,12 +14,10 @@
     <services>
         <!-- Listener -->
         <service id="raziel.listener" class="%raziel.listener.class%">
-            <argument type="service" id="service_container"/>
-            <argument type="service" id="mailer" />
+            <argument type="service" id="logger"/>
+            <argument type="service" id="fractalia_sms.sms_service"/>
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>
-            
-            <!--<tag name="doctrine.entity_listener" event="postFlush"/>-->
         </service>
 
         <!-- Listener Resolver -->

@@ -1,3 +1,8 @@
+fractalia_sms:
+    resource: "@FractaliaSMSBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 raziel:
     resource: "@RazielBundle/Controller/"
     type:     annotation

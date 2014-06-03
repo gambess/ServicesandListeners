@@ -18,74 +18,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Raziel\TestBundle\Entity\Incidencia;
 
-
 class IncidenciaListener
 {
-//    private $mail_service;
-//    private $formatter;
-//    private $another_service;
-
-//    public function __construct($mailer)
-//    {
-//        $this->mail_service = $mailer;
-//    }
-
-    /** 
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     * 
-     */
-    private $container;
-    
-    /** 
-     * @var array
-     * 
-     */
-    private $mapping;
+    private $logger;
+    private $sms_service;
+    private $estados = array();
+    private $prioridades = array();
 
     /**
-     * Creates a container aware entity resolver.
+     * Creates a incidenciaListener.
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
+     * @param $logger
      */
-    public function __construct(ContainerInterface $container, $mailer)
+    public function __construct($logger, $sms_service)
     {
-        $this->setContainer($container);
-        $this->mail_service = $mailer;
-        $this->mapping = array();
+        $this->logger = $logger;
+        $this->sms_service = $sms_service;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-    
-    /**
-     * Trigger para capturar las inserciones
-     *
-     * @param Incidencia $incidencia
-     * @param LifecycleEventArgs $event
-     * @ORM\PostPersist
-     */
-//    public function postPersist(Incidencia $incidencia, LifecycleEventArgs $event)
-//    {
-//        $this->sendMail($incidencia);
-//    }
-   
-    /**
-     * Trigger para capturar las actualizaciones
-     *
-     * @param Incidencia $incidencia
-     * @param LifecycleEventArgs $event
-     * @ORM\PostPersist
-     */
-//    public function postUpdate(Incidencia $incidencia, LifecycleEventArgs $event)
-//    {
-//        $this->sendMail($incidencia);
-//    }
-    
     /**
      * Trigger para capturar las inserciones y actualizaciones
      *
@@ -96,36 +46,18 @@ class IncidenciaListener
      */
     public function launchTrigger(Incidencia $incidencia, LifecycleEventArgs $event)
     {
-        $inci = $event->getObject();
-        if(null === $inci->getFechaInsercion()){
-            $inci->setFechaInsercion(new \DateTime(date('Y-m-d H:m:s')));
-        }
-        $inci->setFechaLectura(new \DateTime(date('Y-m-d H:m:s')));
-        $em = $event->getEntityManager();
-        $this->sendMail($incidencia);
-        $inci->setFechaEnvio(new \DateTime(date('Y-m-d H:m:s')));
-
-        
+        $this->logger->info('Inserción o Actualización capturada');
     }
 
-    public function createMail($texto)
+    public function setPrioridades($estados)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Sending TICKET STATES')
-            ->setFrom('raziel.valle@fractaliasoftware.com')
-            ->setTo('raziel.valle@fractaliasoftware.com')
-            ->setBody( 'start-message: ' . $texto . ' ' . 'end-message' );
-
-        return $message;
+      
+            $this->estados = $estados;
     }
 
-    public function sendMail(Incidencia $incidencia)
+    public function setEstados($prioridades)
     {
-        $format = 'Y-m-d H:i:s';
-        $insert = $incidencia->getFechaInsercion();
-        $texto = 'Estado del Ticket: ' .$incidencia->getEstado() . '<br /> Fecha (Completa) de Inserción: ' . $insert->format($format);
-        $this->mail_service->send($this->createMail((string)$texto));
-        
+        $this->prioridades = $prioridades;
     }
 
 }
