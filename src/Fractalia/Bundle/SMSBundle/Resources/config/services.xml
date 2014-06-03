@@ -12,21 +12,19 @@
     </parameters>
 
     <services>
-        <service id="fractalia_sms.sms_service" class="%fractalia_sms.sms_manager.class%">
-            <argument>%fractalia_sms.sms_sender.class%</argument>
-            <argument>%fractalia_sms.message.class%</argument>
+        <service id="fractalia_sms.format_service" class="%fractalia_sms.message.class%">
+            <!--<call></call>-->
         </service>
+        
         <service id="fractalia_sms.sender_service" class="%fractalia_sms.sms_sender.class%">
-            <argument>%fractalia_sms.sms_sender.class%</argument>
-            <argument>%fractalia_sms.message.class%</argument>
             <call method="setApiParams">
                 <argument>%raziel.envio_sms.api%</argument>
             </call>
         </service>
-        <service id="fractalia_sms.format_service" class="%fractalia_sms.message.class%">
-            <argument>%fractalia_sms.sms_sender.class%</argument>
-            <argument>%fractalia_sms.message.class%</argument>
-            <!--<call></call>-->
+        
+        <service id="fractalia_sms.sms_service" class="%fractalia_sms.sms_manager.class%">
+            <argument type="service" id="fractalia_sms.format_service"/>
+            <argument type="service" id="fractalia_sms.sender_service"/>
         </service>
     </services>
     

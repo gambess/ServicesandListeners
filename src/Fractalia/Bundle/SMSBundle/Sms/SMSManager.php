@@ -13,23 +13,20 @@ namespace Fractalia\Bundle\SMSBundle\Sms;
  *
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
-
-
 class SMSManager
 {
     private $msg;
     private $send;
 
-
-    public function __construct($sender, $msg)
+    public function __construct($msg, $sender)
     {
-        $this->send = $sender;
         $this->msg = $msg;
-        
+        $this->send = $sender;
     }
-   
+
     public function write()
     {
-         return $this->send->escribe();
+        return $this->send->escribe();
     }
+
 }

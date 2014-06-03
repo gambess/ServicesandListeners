@@ -17,12 +17,10 @@ namespace Fractalia\Bundle\SMSBundle\Sms;
 
 class SMSSender
 {
-    private $api =array();
+    private $api = array();
 //    private $client;
     
-    
-    
-    public function __construct($configApi)
+    public function setApiParams($configApi)
     {
         $this->api = $configApi;
     }

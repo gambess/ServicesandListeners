@@ -8,7 +8,7 @@
 
 namespace Fractalia\Bundle\SMSBundle\Sms;
 
-use \Raziel\TestBundle\Entity\Incidencia;
+//use \Raziel\TestBundle\Entity\Incidencia;
 
 /**
  * Description of Message
@@ -17,13 +17,14 @@ use \Raziel\TestBundle\Entity\Incidencia;
  */
 class Message
 {
-    private $incidencia_base;
 
-    public function __construct(Incidencia $i)
+    public function __construct()
     {
-
-        $this->incidencia_base = $i;
+        return true;
     }
 
-    //put your code here
+    public function buildMessage(){
+        
+    }
+    
 }

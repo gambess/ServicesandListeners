@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     
     <parameters>
         <!-- Listener -->
@@ -18,6 +18,15 @@
             <argument type="service" id="fractalia_sms.sms_service"/>
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>
+            <call method="setPrioridades">
+                <argument>%raziel.envio_sms.prioridad%</argument>
+            </call>
+            <call method="setEstados">
+                <argument>%raziel.envio_sms.estado%</argument>
+            </call>
+            <call method="setSgsdServices">
+                <argument>%raziel.envio_sms.servicio%</argument>
+            </call>
         </service>
 
         <!-- Listener Resolver -->

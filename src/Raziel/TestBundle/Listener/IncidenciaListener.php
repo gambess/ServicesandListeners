@@ -24,6 +24,7 @@ class IncidenciaListener
     private $sms_service;
     private $estados = array();
     private $prioridades = array();
+    private $sgsd_services = array();
 
     /**
      * Creates a incidenciaListener.
@@ -46,18 +47,58 @@ class IncidenciaListener
      */
     public function launchTrigger(Incidencia $incidencia, LifecycleEventArgs $event)
     {
-        $this->logger->info('Inserción o Actualización capturada');
+        //capturo el objeto en un insercion o actualizacion Incidencia
+        $i = $event->getObject();
+        if ($this->filterByPrioridades($i))
+        {
+            if ($this->filterByEstados($i))
+            {
+                if ($this->filterBySgsdService($i))
+                {
+                    $this->logger->info('Inserción o Actualización capturada', $this->sms_service->write());
+                }
+            }
+        }
     }
 
     public function setPrioridades($estados)
     {
-      
-            $this->estados = $estados;
+
+        $this->estados = $estados;
     }
 
     public function setEstados($prioridades)
     {
         $this->prioridades = $prioridades;
+    }
+
+    public function filterByPrioridades(Incidencia $incidencia)
+    {
+        return in_array($incidencia->getPrioridad(), $this->prioridades);
+    }
+
+    public function filterByEstados(Incidencia $incidencia)
+    {
+        return in_array($incidencia->getEstado(), $this->estados);
+    }
+
+    protected function filterBySgsdService(Incidencia $incidencia)
+    {
+
+        if (in_array($incidencia->getGrupoDestino(), $this->sgsd_services) or in_array($incidencia->getGrupoOrigen(), $this->sgsd_services))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function setSgsdServices($sgsd_services)
+    {
+
+        $this->sgsd_services = $sgsd_services;
     }
 
 }
