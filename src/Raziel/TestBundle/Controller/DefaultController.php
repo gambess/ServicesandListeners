@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Seven\RpcBundle\XmlRpc\Client;
 use Seven\RpcBundle\XmlRpc\Server;
+use Raziel\TestBundle\RpcClient\RpcClient;
 
 class DefaultController extends Controller
 {
@@ -85,15 +86,24 @@ class DefaultController extends Controller
      */
     public function clientAction()
     {
-        $client = new Client("http://localhost/syFwk/web/app_dev.php/xmlrpc-server");
-//        $params = array('B902CCDB-RAUL.MADR', 'Nivel1', array('602814043', 'Texto de Prueba 1', 'Raziel'));
-//        echo $client->call('sms.info', array('Raziel')); //Llamada que funciona
 
-//        echo $client->call('sms.enviarSMS', 'B902CCDB-RAUL.MADR', 'Nivel1','602814043', 'Texto de Prueba 1', 'Raziel');
-        echo $client->call('sms.enviarSMS', array('B902CCDB-RAUL.MADR', 'Nivel1'));
-//        echo $client->call('sms.info', array('Raziel'));
-//        echo $client->call('calc.add', array(1, 2)); // echo -1
-//        echo $client->call('calc.sub', array(2, 3)); // echo -1
+        $params = $this->container->getParameter('raziel.envio_sms.api');
+        $methodName = "MensajeriaNegocios_enviarAGrupoContacto";
+        $destinos = $this->container->getParameter('raziel.envio_sms.grupo_destino');
+        $destino = array_shift($destinos);
+        
+        $paramsToSend = array(
+            $params['apiuser'],
+            $params['apipass'],
+            $destino['destinatario'],
+            'Mensaje de Texto a traves de symfony',
+            $params['remitente']
+            
+        );
+//        print_r($paramsToSend);die;
+        $cliente = new RpcClient($params['url']);
+        $response = $cliente->makeCall($methodName, $paramsToSend);
+        return new Response($response);
     }
     /**
      * @Route("/config")
@@ -101,17 +111,20 @@ class DefaultController extends Controller
      */
     function configAction()
     {
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.api', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.servicio', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.grupo_destino', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.numero_destino', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.prioridad', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.estado', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.nombres_cortos', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.traduccion_tipo_caso', true)).'</pre>';
-        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.tsol_guardia', true)).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.api'),true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.servicio'), true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.grupo_destino'), true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.numero_destino'), true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.prioridad'), true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.estado'), true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.nombres_cortos'), true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.traduccion_tipo_caso'), true).'</pre>';
+        echo '<pre>'.print_r($this->container->getParameter('raziel.envio_sms.tsol_guardia'), true).'</pre>';
         
-        
+        $destinos["MensajeriaNegocios_enviarAGrupoContacto"] = $this->container->getParameter('raziel.envio_sms.grupo_destino');
+        $destinos["MensajeriaNegocios_enviarSMS"] = $this->container->getParameter('raziel.envio_sms.numero_destino');
+        echo "<pre>";
+        print_r($destinos); echo "</pre>";
 
         
 //        foreach ($conf['api'] as $key => $value)
