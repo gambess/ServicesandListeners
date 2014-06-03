@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    
+    <parameters>
+        <parameter key="fractalia_sms.sms_manager.class">Fractalia\Bundle\SMSBundle\Sms\SMSManager</parameter>
+        <parameter key="fractalia_sms.sms_sender.class">Fractalia\Bundle\SMSBundle\Sms\SMSSender</parameter>
+        <parameter key="fractalia_sms.message.class">Fractalia\Bundle\SMSBundle\Sms\Message</parameter>
+    </parameters>
+
+    <services>
+        <service id="fractalia_sms.sms_service" class="%fractalia_sms.sms_manager.class%">
+            <argument>%fractalia_sms.sms_sender.class%</argument>
+            <argument>%fractalia_sms.message.class%</argument>
+        </service>
+        <service id="fractalia_sms.sender_service" class="%fractalia_sms.sms_sender.class%">
+            <argument>%fractalia_sms.sms_sender.class%</argument>
+            <argument>%fractalia_sms.message.class%</argument>
+            <call method="setApiParams">
+                <argument>%raziel.envio_sms.api%</argument>
+            </call>
+        </service>
+        <service id="fractalia_sms.format_service" class="%fractalia_sms.message.class%">
+            <argument>%fractalia_sms.sms_sender.class%</argument>
+            <argument>%fractalia_sms.message.class%</argument>
+            <!--<call></call>-->
+        </service>
+    </services>
+    
+</container>
