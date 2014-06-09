@@ -19,13 +19,13 @@
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>
             <call method="setPrioridades">
-                <argument>%raziel.envio_sms.prioridad%</argument>
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.prioridad%</argument>
             </call>
             <call method="setEstados">
-                <argument>%raziel.envio_sms.estado%</argument>
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.estado%</argument>
             </call>
             <call method="setSgsdServices">
-                <argument>%raziel.envio_sms.servicio%</argument>
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.servicio%</argument>
             </call>
         </service>
 
